@@ -1,0 +1,1 @@
+IMAGE img "sgdk.png" FAST
