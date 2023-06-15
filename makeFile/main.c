@@ -252,6 +252,38 @@ static void updatePhysics()
 	// Tile X/Y
 	u16 tile_x, tile_y;
 
+	if (hcount_y > 0)
+	{
+		if (cam_y + CAM_BOTTOM > 128) {
+			if (player_spd_y > 0)
+			{
+				hcount_y -= 2;
+			}
+			else if (player_spd_y > 0)
+			
+			{
+					hcount_y += 2;
+			}
+			
+			
+
+			
+			
+		}
+		else
+		{
+			if (hcount_y  < 100)
+			{
+				hcount_y += 2;
+			}
+			
+		}
+		
+
+
+	}
+	
+
 	// Up/Down
 	if (player_spd_y < 0)
 	{
@@ -268,21 +300,7 @@ static void updatePhysics()
 		if (top_left == 0 && top_right == 0) {
 			player_y += player_spd_y;
 
-			if (hcount_y < 224)
-			{
-				if (cam_y + CAM_TOP > 128)
-				{
-
-					hcount_y += 2;
-				}
-				
-				
-				
-			}
-			else
-			{
-				hcount_y = 224;
-			}
+		
 			
 		}
 		else
@@ -321,18 +339,7 @@ static void updatePhysics()
 		if (bottom_left == 0 && bottom_right == 0) {
 			player_y += player_spd_y;
 
-			if (hcount_y > 0)
-			{
-				if ( cam_y + CAM_BOTTOM > 128) {
-					hcount_y -= 2;
-				}
-
-
-			}
-			else
-			{
-				hcount_y = 0;
-			}
+			
 			
 		}
 		else
@@ -479,6 +486,6 @@ static void setCameraPosition(s16 x, s16 y)
 
 		// Scroll Maps
 		MAP_scrollTo(bg_a, x, y);
-		MAP_scrollTo(bg_b, (x >> 1), (y >> 1));
+		MAP_scrollTo(bg_b, x, y );
 	}
 }
