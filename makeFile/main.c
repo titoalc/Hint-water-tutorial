@@ -49,6 +49,8 @@ u16 player_ptile_y;
 // Camera
 s16 cam_x;
 s16 cam_y;
+int map_y;
+char map_char[6] = "a";
 
 // Tile IDs
 u16 tile_id;
@@ -106,10 +108,11 @@ void VIntHandler()
 int main() {
 /// Palette
 	u16 palette[64];
-
+	map_y = 64;
 	// Screen Width
 	VDP_setScreenWidth320();
-
+	VDP_setTextPalette(PAL0);
+	VDP_setTextPlane(WINDOW);
 	// Init Sprite Engine
 	SPR_init();
 
@@ -149,7 +152,7 @@ int main() {
 
 	// Player Sprite
 	player = SPR_addSprite(&spr_player, player_x, player_y, TILE_ATTR(PAL2, FALSE, FALSE, FALSE));
-
+	VDP_setWindowVPos(FALSE,1);
 	// Update Sprites
 	SPR_update();
 
@@ -170,14 +173,9 @@ int main() {
 		
 		// Input
 		
-		if (hcount_y < 0)
-		{
-			hcount_y = 0;
-		}
-		if (hcount_y > 224)
-		{
-			hcount_y = 224;
-		}
+		VDP_clearTextArea(0,1,6,1);
+		sprintf(map_char,"%d", map_y);
+		VDP_drawText(map_char,0,1);
 		
 	//	if (player_spd_y < 0)
 		//{
@@ -252,36 +250,7 @@ static void updatePhysics()
 	// Tile X/Y
 	u16 tile_x, tile_y;
 
-	if (hcount_y > 0)
-	{
-		if (cam_y + CAM_BOTTOM > 128) {
-			if (player_spd_y > 0)
-			{
-				hcount_y -= 2;
-			}
-			else if (player_spd_y > 0)
-			
-			{
-					hcount_y += 2;
-			}
-			
-			
-
-			
-			
-		}
-		else
-		{
-			if (hcount_y  < 100)
-			{
-				hcount_y += 2;
-			}
-			
-		}
-		
-
-
-	}
+	
 	
 
 	// Up/Down
@@ -299,8 +268,14 @@ static void updatePhysics()
 		// Move
 		if (top_left == 0 && top_right == 0) {
 			player_y += player_spd_y;
+			
+			
+			
+			
 
-		
+			
+			
+			
 			
 		}
 		else
@@ -320,7 +295,7 @@ static void updatePhysics()
 				top_right = MAP_COLLISION[tile_right + (tile_top << 4)];
 
 				// Slide
-				if (top_left == 0 && top_right == 0) { player_y += player_spd_y; }
+				if (top_left == 0 && top_right == 0) { player_y += player_spd_y;}
 			}
 		}
 	}
@@ -338,7 +313,8 @@ static void updatePhysics()
 		// Move
 		if (bottom_left == 0 && bottom_right == 0) {
 			player_y += player_spd_y;
-
+			
+			
 			
 			
 		}
@@ -463,6 +439,7 @@ static void updateCamera()
 	else if (ncam_y > (MAP_HEIGHT - 224)) { ncam_y = (MAP_HEIGHT - 224); }
 
 	// Set Camera Position
+	map_y = ncam_y;
 	setCameraPosition(ncam_x, ncam_y);
 }
 
