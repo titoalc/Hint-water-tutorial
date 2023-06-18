@@ -9,7 +9,7 @@ u16 cur_line = 0; //current line
 f16 v_offset = 0; //shif of the plane
 
 f16 v_scroll_step = FIX16(3); //step to increase the displacement of the v_offset
-u8 hint_y = 224;
+u8 hint_y = 225;
 u8 hcount_y = 128;
 
 // Map
@@ -173,9 +173,9 @@ int main() {
 		
 		// Input
 		
-		VDP_clearTextArea(0,1,6,1);
+		VDP_clearTextArea(0,0,6,1);
 		sprintf(map_char,"%d", map_y);
-		VDP_drawText(map_char,0,1);
+		VDP_drawText(map_char,0,0);
 		
 	//	if (player_spd_y < 0)
 		//{
@@ -264,10 +264,30 @@ static void updatePhysics()
 		// Collision
 		top_left = MAP_COLLISION[tile_left + (tile_top << 4)];
 		top_right = MAP_COLLISION[tile_right + (tile_top << 4)];
-
+		hcount_y - map_y;
 		// Move
 		if (top_left == 0 && top_right == 0) {
 			player_y += player_spd_y;
+			
+			
+			
+			
+			
+
+						
+							
+					
+						
+						
+						
+					
+					
+				
+			
+					
+				
+				
+				
 			
 			
 			
@@ -301,6 +321,7 @@ static void updatePhysics()
 	}
 	else if (player_spd_y > 0)
 	{
+		
 		// Tiles
 		tile_bottom = PIXEL_TO_TILE(player_y + player_spd_y + 32);
 		tile_left = PIXEL_TO_TILE(player_x + player_spd_x);
@@ -313,6 +334,13 @@ static void updatePhysics()
 		// Move
 		if (bottom_left == 0 && bottom_right == 0) {
 			player_y += player_spd_y;
+			
+			
+			
+
+					
+					
+				
 			
 			
 			
@@ -439,7 +467,13 @@ static void updateCamera()
 	else if (ncam_y > (MAP_HEIGHT - 224)) { ncam_y = (MAP_HEIGHT - 224); }
 
 	// Set Camera Position
-	map_y = ncam_y;
+	map_y = 128 - ncam_y;
+	if (map_y < 0)
+	{
+		map_y = 0;
+		
+	}
+	hcount_y = map_y;
 	setCameraPosition(ncam_x, ncam_y);
 }
 
