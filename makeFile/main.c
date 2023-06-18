@@ -9,8 +9,9 @@ u16 cur_line = 0; //current line
 f16 v_offset = 0; //shif of the plane
 
 f16 v_scroll_step = FIX16(3); //step to increase the displacement of the v_offset
-u8 hint_y = 225;
-u8 hcount_y = 128;
+
+u8 hint_y = 225; // end of Hint
+u8 hcount_y = 128; // begin of Hint
 
 // Map
 #define MAP_WIDTH				512
@@ -87,6 +88,7 @@ const u16 MAP_COLLISION[256] =
 //	VDP_setVerticalScroll(BG_A, cur_line + fix16ToInt(v_offset));
 //	v_scroll_step += FIX16(0.02); //Change the step, thereby, the speed of the plane - increases
 //	v_offset -= v_scroll_step;
+// palette colors change
 
 	PAL_setColor(20, 0x0640);
 //	PAL_setColor(22, 0x0A60);
@@ -106,6 +108,8 @@ void VIntHandler()
 //	v_scroll_step = FIX16(3.0); //Reset the step with which the plain moves.
 //	v_offset = 0;
 	
+// return to original colors
+
 	PAL_setColor(20, 0x0220);
 //	PAL_setColor(22, 0x0420);
 //	PAL_setColor(18, 0x0240);
@@ -481,8 +485,10 @@ static void updateCamera()
 	if (ncam_y < 0) { ncam_y = 0; }
 	else if (ncam_y > (MAP_HEIGHT - 224)) { ncam_y = (MAP_HEIGHT - 224); }
 
-	// Set Camera Position
+	// Set Hint Position
 	map_y = 128 - ncam_y;
+
+//Set Camera Position
 	if (map_y < 0)
 	{
 		map_y = 0;
