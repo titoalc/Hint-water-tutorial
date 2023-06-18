@@ -82,15 +82,21 @@ const u16 MAP_COLLISION[256] =
 };
 
 
-HINTERRUPT_CALLBACK HIntHandler()
+ HINTERRUPT_CALLBACK HIntHandler()
 {
 //	VDP_setVerticalScroll(BG_A, cur_line + fix16ToInt(v_offset));
 //	v_scroll_step += FIX16(0.02); //Change the step, thereby, the speed of the plane - increases
 //	v_offset -= v_scroll_step;
 
 	PAL_setColor(20, 0x0640);
-	PAL_setColor(22, 0x0A60);
-	PAL_setColor(18, 0x0860);
+//	PAL_setColor(22, 0x0A60);
+	// PAL_setColor(18, 0x0860);
+	PAL_setColor(34, 0x0ECA);
+	PAL_setColor(35, 0x0EA8);
+	PAL_setColor(36, 0x0842);
+	PAL_setColor(37, 0x0A64);
+	PAL_setColor(38, 0x0EEC);
+	
 
 };
 
@@ -99,23 +105,29 @@ void VIntHandler()
 //	cur_line += 1; //move the current line, each frame
 //	v_scroll_step = FIX16(3.0); //Reset the step with which the plain moves.
 //	v_offset = 0;
-
+	
 	PAL_setColor(20, 0x0220);
-	PAL_setColor(22, 0x0420);
-	PAL_setColor(18, 0x0240);
+//	PAL_setColor(22, 0x0420);
+//	PAL_setColor(18, 0x0240);
+	PAL_setColor(34, 0x0AAE);
+	PAL_setColor(35, 0x088E);
+	PAL_setColor(36, 0x0228);
+	PAL_setColor(37, 0x044A);
+	PAL_setColor(38, 0x0EEE);
+
 }
 
 int main() {
 /// Palette
 	u16 palette[64];
-	map_y = 64;
+	
 	// Screen Width
 	VDP_setScreenWidth320();
 	VDP_setTextPalette(PAL0);
 	VDP_setTextPlane(WINDOW);
 	// Init Sprite Engine
 	SPR_init();
-
+	
 
 	// Default Palette
 	PAL_setColors(0, (u16*)palette_black, 64, DMA);
@@ -125,7 +137,7 @@ int main() {
 	bg_tile_id = tile_id;
 	VDP_loadTileSet(&ts_stage_01, bg_tile_id, DMA);
 	tile_id += ts_stage_01.numTile;
-
+	
 	// Player Position
 	player_x = 64;
 	player_y = 64;
@@ -150,9 +162,10 @@ int main() {
 	// Reset Buffer Size
 	DMA_setBufferSizeToDefault();
 
+
 	// Player Sprite
 	player = SPR_addSprite(&spr_player, player_x, player_y, TILE_ATTR(PAL2, FALSE, FALSE, FALSE));
-	VDP_setWindowVPos(FALSE,1);
+//	VDP_setWindowVPos(FALSE,1);
 	// Update Sprites
 	SPR_update();
 
@@ -187,11 +200,13 @@ int main() {
 		
 			
 				{	SYS_disableInts();
+				    
 					VDP_setHIntCounter(hcount_y);
+					
 					VDP_setHInterrupt(hint_y);
 
 					SYS_setHIntCallback(HIntHandler);
-
+					
 					SYS_setVIntCallback(VIntHandler);
 					
 				}	SYS_enableInts();
@@ -264,7 +279,7 @@ static void updatePhysics()
 		// Collision
 		top_left = MAP_COLLISION[tile_left + (tile_top << 4)];
 		top_right = MAP_COLLISION[tile_right + (tile_top << 4)];
-		hcount_y - map_y;
+		// hcount_y - map_y;
 		// Move
 		if (top_left == 0 && top_right == 0) {
 			player_y += player_spd_y;
