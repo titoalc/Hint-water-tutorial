@@ -120,7 +120,36 @@ void VIntHandler()
 	PAL_setColor(38, 0x0EEE);
 
 }
+ void color_changer() {
+static	int time;
 
+	time++;
+	if (time == 1)
+	{
+		PAL_setColor(50, 0x0884);
+		PAL_setColor(51, 0x0640);
+		PAL_setColor(55, 0x0AA6);
+	}
+	if (time == 11)
+	{
+		PAL_setColor(55, 0x0884);
+		PAL_setColor(50, 0x0640);
+		PAL_setColor(51, 0x0AA6);
+		
+	}
+	if (time == 21)
+	{
+		PAL_setColor(55, 0x0640);
+		PAL_setColor(50, 0x0AA6);
+		PAL_setColor(51, 0x0884);
+		
+	}
+	if (time >= 31)
+	{
+		time = 0;
+	}
+
+}
 int main() {
 /// Palette
 	u16 palette[64];
@@ -177,7 +206,7 @@ int main() {
 	memcpy(&palette[0], pal_stage_01a.data, 16 * 2);
 	memcpy(&palette[16], pal_stage_01b.data, 16 * 2);
 	memcpy(&palette[32], pal_player.data, 16 * 2);
-	memcpy(&palette[48], (u16*)palette_black, 16 * 2);
+	memcpy(&palette[48], pal_stage_02a.data, 16 * 2);
 
 	
 	
@@ -193,7 +222,7 @@ int main() {
 		VDP_clearTextArea(0,0,6,1);
 		sprintf(map_char,"%d", map_y);
 		VDP_drawText(map_char,0,0);
-		
+		color_changer();
 	//	if (player_spd_y < 0)
 		//{
 		//	if (hcount_y > 0 && hcount_y <= 224)
@@ -215,7 +244,7 @@ int main() {
 					
 				}	SYS_enableInts();
 			
-			
+				
 		
 		
 		
