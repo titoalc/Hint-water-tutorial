@@ -10,7 +10,7 @@ f16 v_offset = 0; //shif of the plane
 
 f16 v_scroll_step = FIX16(3); //step to increase the displacement of the v_offset
 
-u8 hint_y = 225; // end of Hint
+u8 hint_y = 160; // end of Hint
 u8 hcount_y = 128; // begin of Hint
 
 // Map
@@ -85,14 +85,17 @@ const u16 MAP_COLLISION[256] =
 
  HINTERRUPT_CALLBACK HIntHandler()
 {
+	
 //	VDP_setVerticalScroll(BG_A, cur_line + fix16ToInt(v_offset));
 //	v_scroll_step += FIX16(0.02); //Change the step, thereby, the speed of the plane - increases
 //	v_offset -= v_scroll_step;
 // palette colors change
 
-	PAL_setColor(20, 0x0640);
+//	PAL_setColor(20, 0x0640);
 //	PAL_setColor(22, 0x0A60);
 	// PAL_setColor(18, 0x0860);
+
+
 	PAL_setColor(34, 0x0ECA);
 	PAL_setColor(35, 0x0EA8);
 	PAL_setColor(36, 0x0842);
@@ -110,9 +113,11 @@ void VIntHandler()
 	
 // return to original colors
 
-	PAL_setColor(20, 0x0220);
+//	PAL_setColor(20, 0x0220);
 //	PAL_setColor(22, 0x0420);
 //	PAL_setColor(18, 0x0240);
+
+
 	PAL_setColor(34, 0x0AAE);
 	PAL_setColor(35, 0x088E);
 	PAL_setColor(36, 0x0228);
@@ -126,22 +131,22 @@ static	int time;
 	time++;
 	if (time == 1)
 	{
-		PAL_setColor(50, 0x0884);
-		PAL_setColor(51, 0x0640);
-		PAL_setColor(55, 0x0AA6);
+		PAL_setColor(50, 0x0862);
+		PAL_setColor(51, 0x0840);
+		PAL_setColor(54, 0x0A86);
 	}
 	if (time == 11)
 	{
-		PAL_setColor(55, 0x0884);
-		PAL_setColor(50, 0x0640);
-		PAL_setColor(51, 0x0AA6);
+		PAL_setColor(54, 0x0862);
+		PAL_setColor(50, 0x0840);
+		PAL_setColor(51, 0x0A86);
 		
 	}
 	if (time == 21)
 	{
-		PAL_setColor(55, 0x0640);
-		PAL_setColor(50, 0x0AA6);
-		PAL_setColor(51, 0x0884);
+		PAL_setColor(54, 0x0840);
+		PAL_setColor(50, 0x0A86);
+		PAL_setColor(51, 0x0862);
 		
 	}
 	if (time >= 31)
@@ -239,8 +244,20 @@ int main() {
 					VDP_setHInterrupt(hint_y);
 
 					SYS_setHIntCallback(HIntHandler);
+
+					PAL_setColor(34, 0x0ECA);
+					PAL_setColor(35, 0x0EA8);
+					PAL_setColor(36, 0x0842);
+					PAL_setColor(37, 0x0A64);
+					PAL_setColor(38, 0x0EEC);
 					
 					SYS_setVIntCallback(VIntHandler);
+
+					PAL_setColor(34, 0x0AAE);
+					PAL_setColor(35, 0x088E);
+					PAL_setColor(36, 0x0228);
+					PAL_setColor(37, 0x044A);
+					PAL_setColor(38, 0x0EEE);
 					
 				}	SYS_enableInts();
 			
@@ -516,7 +533,27 @@ static void updateCamera()
 
 	// Set Hint Position
 	map_y = 128 - ncam_y;
+	hint_y = 196 - ncam_y;
 
+	
+	if (player_y >= hint_y)
+	{
+
+		PAL_setColor(34, 0x0ECA);
+		PAL_setColor(35, 0x0EA8);
+		PAL_setColor(36, 0x0842);
+		PAL_setColor(37, 0x0A64);
+		PAL_setColor(38, 0x0EEC);
+
+		VDP_setHInterrupt(0);
+
+		
+
+	}
+	else
+	{
+		VDP_setHInterrupt(hint_y);
+	}
 //Set Camera Position
 	if (map_y < 0)
 	{
